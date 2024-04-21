@@ -1,2 +1,11 @@
 # grand-devoir
-exercitii
+Exercitii
+
+Ex 1:
+ 
+Am o clasa FlightBookingSystem care are 2 structuri, una struct Node si una struct Vol. Node contine un sir de caractere passangerName si adresa urmatorului nod si un constructor. struct Vol contine un pointer care memoreaza adresa unei liste inlantuite de nume si un pointer care trimite la urmatorul nod, un constructor si mai are o functie care verifica daca zborul e full. BookSeat() care are ca parametru un nume verifica daca lista de zboruri e vida sau daca zborul e full. In acest caz creeaza un nou zbor si il leaga de pointerul head. In caz contrar, creeaza un nod nou cu numele si il leaga de nodul anterior. Functia CancelBooking() are ca parametru numarul locului si verifica fiecare zbor in parte. Daca nodul corespunzator locului exista, este diferit de null, va fi eliberat din memorie, iar pasagerul anterior ii va ocupa locul. Functia DisplaySystem() afiseaza toate zborurile cu toti pasagerii, iar functia GetPassanger() care are ca parametru numarul locului cauta prin toate zborurile, iar daca pasagerul se afla la locul furnizat, numele acestuia va fi returnat de functie. Functia main() initializeaza sistemul si creeaza un meniu care poate fi accesat introducand de la tastatura indicii fiecarei linii.
+
+
+Ex 2:
+
+Codul foloseste o struct Oaza care contine parametrii din cerinta si o implementare a clasei Queue care are 2 variabile intregi cap si coada si un vector de clase Queue. Mai are un constructor care intializeaza capul si coada cu 0, o functie enqueue() care imi adauga element in finalul cozii si o functie dequeue care scoate elementul de la inceputul cozii, o functie peek() care verifica lungimea maxima a cozii. Apoi avem 4 functii care verifica daca e goala coada, imi returneaza marimea ei si inceputul si sfarsitul cozii: isEmpty(); size(); start(); end(). OptimalStart() e functia pentru a gasi oaza de plecare optima. In functia aceasta se sorteaza oazele in ordine crescatoare, apoi se calculeaza drumul cel mai scurt. Daca drumul poate fi parcurs returneaza nodul de plecare, daca nu returneaza -1. In functia main() declara si citeste oazele, apeleaza functia si va afisa valoarea returnata de functie sau mesajul “Nu exista oaza de placare optima.” in caz contrar.
