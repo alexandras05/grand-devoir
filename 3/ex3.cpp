@@ -1,8 +1,10 @@
 #include <iostream>
-#include <stack>
-#include <vector>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <stack>
+#include <algorithm> // for std::all_of
+#include <cctype> // for std::isdigit
 using namespace std;
 
 
@@ -19,7 +21,7 @@ class Calculator
 public:
     stack<char> expressionStack;
     vector<CharIntPair> data_arr;
-    string letters;
+    static string letters;
 
     void readInput(const std::string& filePath){
         ifstream file(filePath);
@@ -31,14 +33,16 @@ public:
 
         string line;
         while (getline(file, line)){
-            if(line[0] != '(' && letters.find(line[0]) != string::npos ){
+            bool allDigits = all_of(line.begin() + 2, line.end(), [](char c){ return isdigit(c); }); //check if everything after = is a digit
+            bool A_Z = (letters.find(line[0]) != string::npos); // check if the variable declaration meets the imposed rules
+            if((line[0] != '(') && (line[1] == '=') && (A_Z) && (allDigits)){
                 //code that writes CharIntPair's to data_array and checks for assignment errors 
+                
             } else if (line[0] == '(') {
                 /* code that checks expression validity and writes to stack*/
             } else {
-                cout << line << ": Improper imput format" << endl;
+                cout << line << ": Improper input format" << endl;
             }
-            
         }
     }
 
