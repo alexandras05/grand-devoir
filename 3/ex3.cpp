@@ -21,8 +21,8 @@ class Calculator
 public:
     stack<char> expressionStack;
     vector<CharIntPair> data_arr;
-    static string letters;
-    static string operators;
+    static std::string letters;
+    static std::string operators;
 
     void readInput(const std::string& filePath){
         ifstream file(filePath);
@@ -32,10 +32,10 @@ public:
             return;
         }
 
-        string line;
+        std::string line;
         while (getline(file, line)){
             bool allDigits = all_of(line.begin() + 2, line.end(), [](char c){ return isdigit(c); }); //check if everything after = is a digit
-            bool A_Z = (letters.find(line[0]) != string::npos); // check if the variable declaration meets the imposed rules
+            bool A_Z = (letters.find(line[0]) != std::string::npos); // check if the variable declaration meets the imposed rules
             
             if((line[0] != '(') && (line[1] == '=') && (A_Z) && (allDigits)){
                 //code that writes CharIntPair's to data_array and checks for assignment errors 
@@ -49,8 +49,20 @@ public:
                 
             } else if (line[0] == '(') {
                 /* code that checks expression validity and writes to stack*/
+                // needed implementation to check if arithmetic expression is valid !!!
+                for (int i = 0; i < line.size(); i++)
+                {
+                    expressionStack.push(line[i]);
+                }
+                //to make this code work with more than one expression per file we would 
+                //need to have a queue or a list where we would add a different instance 
+                //of this stack everytime
+                
             } else {
                 cout << line << ": Improper input format" << endl;
+                expressionStack = stack <char>();
+                data_arr = vector<CharIntPair>();
+                break;
             }
         }
     }
@@ -63,12 +75,12 @@ public:
         ofstream outputFile("output.txt");
 
         if (!outputFile) {
-            cerr << "Unable to open output file." << std::endl;
+            cerr << "Unable to open output file." << endl;
             return;
         }
 
         int result = execute();
-        outputFile << "Result: " << result << std::endl;
+        outputFile << "Result: " << result << endl;
 
         outputFile.close();
     }
@@ -76,9 +88,8 @@ public:
     Calculator(/* args */);
     ~Calculator();
 };
-//avem nevoie de asta la verificari :3
-string Calculator::letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-string Calculator::operators = "+-*/%";
+std::string Calculator::letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+std::string Calculator::operators = "+-*/%";
 
 
 int main(int argc, char const *argv[])

@@ -39,3 +39,5 @@
 
 # Unignore all dirs
 !*/
+
+.vscode
