@@ -5,22 +5,18 @@
 #include <stack>
 #include <algorithm> // for std::all_of
 #include <cctype> // for std::isdigit
+#include "getValueByChar.h"
+#include "infixToPostfix.h"
+#include "eval.h"
 using namespace std;
-
-
-
-struct CharIntPair {
-    char character;
-    int number;
-
-    CharIntPair(char c, int n) : character(c), number(n) {}
-};
 
 class Calculator
 {
 public:
-    stack<char> expressionStack;
-    vector<CharIntPair> data_arr;
+    //I used the expressionStack in the headers but with anothe
+    vector<CharIntPair> pairs;
+    std::string polish_line;
+    std::string line;
     static std::string letters;
     static std::string operators;
 
@@ -32,61 +28,70 @@ public:
             return;
         }
 
-        std::string line;
         while (getline(file, line)){
             bool allDigits = all_of(line.begin() + 2, line.end(), [](char c){ return isdigit(c); }); //check if everything after = is a digit
             bool A_Z = (letters.find(line[0]) != std::string::npos); // check if the variable declaration meets the imposed rules
             
             if((line[0] != '(') && (line[1] == '=') && (A_Z) && (allDigits)){
-                //code that writes CharIntPair's to data_array and checks for assignment errors 
+                //code that writes CharIntPair's to pairs and checks for assignment errors 
                 size_t equalPos = line.find('=');
                 char c = line[0]; //we get the var name
                 int n = stoi(line.substr(equalPos + 1)); //we get the var value
                 
-                // Create a CharIntPair and add it to data_arr
+                // Create a CharIntPair and add it to pairs
                 CharIntPair my_tuple = CharIntPair(c, n);
-                data_arr.push_back(my_tuple);
+                pairs.push_back(my_tuple);
                 
             } else if (line[0] == '(') {
                 /* code that checks expression validity and writes to stack*/
                 // needed implementation to check if arithmetic expression is valid !!!
-                for (int i = 0; i < line.size(); i++)
-                {
-                    expressionStack.push(line[i]);
-                }
+                polish_line = infixToPostfix(line);
+                
                 //to make this code work with more than one expression per file we would 
                 //need to have a queue or a list where we would add a different instance 
                 //of this stack everytime
                 
             } else {
                 cout << line << ": Improper input format" << endl;
-                expressionStack = stack <char>();
-                data_arr = vector<CharIntPair>();
+                polish_line = ""; //We empty the memory just to be safe
+                pairs = vector<CharIntPair>();
                 break;
             }
         }
     }
 
     int execute(){
-        // code that calculates the contents of data_arr
+        string polish_line_values;
+        for (int i = 0; i < polish_line.size(); i++){
+            if (isalpha(polish_line[i])){
+                int value = getValueByChar(pairs, polish_line[i]);
+                polish_line_values += static_cast<char>(value);
+            } else {
+                polish_line_values += polish_line[i];
+            }
+
+        }
+        int result = evaluatePostfix(polish_line_values);
+        return result;
+
     }
 
     void writeOutput(){
-        ofstream outputFile("output.txt");
+                ofstream outputFile("output.txt");
 
-        if (!outputFile) {
-            cerr << "Unable to open output file." << endl;
-            return;
-        }
+                if (!outputFile)
+                {
+                    cerr << "Unable to open output file." << endl;
+                    return;
+                }
 
-        int result = execute();
-        outputFile << "Result: " << result << endl;
+                int result = execute();
+                outputFile << "Result: " << result << endl;
 
-        outputFile.close();
+                outputFile.close();
     }
 
-    Calculator(/* args */);
-    ~Calculator();
+    Calculator(/* args */) = default;
 };
 std::string Calculator::letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 std::string Calculator::operators = "+-*/%";
@@ -101,10 +106,9 @@ int main(int argc, char const *argv[])
 
     Calculator calculator;
     calculator.readInput(argv[1]);
-
+    calculator.execute();
+    calculator.writeOutput();
     // Other code...
 
     return 0;
-    return 0;
 }
-
