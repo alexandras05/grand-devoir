@@ -22,6 +22,7 @@ public:
     stack<char> expressionStack;
     vector<CharIntPair> data_arr;
     static string letters;
+    static string operators;
 
     void readInput(const std::string& filePath){
         ifstream file(filePath);
@@ -35,8 +36,16 @@ public:
         while (getline(file, line)){
             bool allDigits = all_of(line.begin() + 2, line.end(), [](char c){ return isdigit(c); }); //check if everything after = is a digit
             bool A_Z = (letters.find(line[0]) != string::npos); // check if the variable declaration meets the imposed rules
+            
             if((line[0] != '(') && (line[1] == '=') && (A_Z) && (allDigits)){
                 //code that writes CharIntPair's to data_array and checks for assignment errors 
+                size_t equalPos = line.find('=');
+                char c = line[0]; //we get the var name
+                int n = stoi(line.substr(equalPos + 1)); //we get the var value
+                
+                // Create a CharIntPair and add it to data_arr
+                CharIntPair my_tuple = CharIntPair(c, n);
+                data_arr.push_back(my_tuple);
                 
             } else if (line[0] == '(') {
                 /* code that checks expression validity and writes to stack*/
@@ -69,6 +78,8 @@ public:
 };
 //avem nevoie de asta la verificari :3
 string Calculator::letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+string Calculator::operators = "+-*/%";
+
 
 int main(int argc, char const *argv[])
 {
