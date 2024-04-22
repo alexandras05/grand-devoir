@@ -61,19 +61,8 @@ public:
     }
 
     int execute(){
-        string polish_line_values;
-        for (int i = 0; i < polish_line.size(); i++){
-            if (isalpha(polish_line[i])){
-                int value = getValueByChar(pairs, polish_line[i]);
-                polish_line_values += static_cast<char>(value);
-            } else {
-                polish_line_values += polish_line[i];
-            }
-
-        }
-        int result = evaluatePostfix(polish_line_values);
+        int result = evaluatePostfix(polish_line, pairs);
         return result;
-
     }
 
     void writeOutput(){
@@ -99,13 +88,16 @@ std::string Calculator::operators = "+-*/%";
 
 int main(int argc, char const *argv[])
 {
-    if (argc < 2) {
+    /* if (argc < 2) {if (argc < 2) {
         std::cerr << "Please provide a file path as a command line argument." << std::endl; //Error Handling if there is no arg provided
         return 1;
     }
+        std::cerr << "Please provide a file path as a command line argument." << std::endl; //Error Handling if there is no arg provided
+        return 1;
+    } */
 
     Calculator calculator;
-    calculator.readInput(argv[1]);
+    calculator.readInput("/home/lupulcelbun/Programing/ccc/grand-devoir/3/my_input.txt");
     calculator.execute();
     calculator.writeOutput();
     // Other code...
