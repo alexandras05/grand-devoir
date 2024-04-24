@@ -38,8 +38,8 @@ std::string infixToPostfix(std::string infix) {
             expressionStack.push(c);
         }
     }
-
-    while (!expressionStack.empty()) {
+    // in case we get input like "A+B"  and the ')' never hits
+    while (!expressionStack.empty()) { 
         postfix += expressionStack.top();
         expressionStack.pop();
     }
