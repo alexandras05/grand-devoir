@@ -123,7 +123,7 @@ int main() {
     if (optimalStart == -1) {
         cout << "Nu există oaza de plecare optimă.\n";
     } else {
-        cout << optimalStart << "\n";
+        cout << optimalStart +1 << "\n";
     }
 
     fin.close();
